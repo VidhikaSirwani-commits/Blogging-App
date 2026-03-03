@@ -3,6 +3,7 @@ package com.codemine.blog_app_apis.controllers;
 import com.codemine.blog_app_apis.payloads.ApiResponse;
 import com.codemine.blog_app_apis.payloads.UserDto;
 import com.codemine.blog_app_apis.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,14 +22,14 @@ public class UserController {
     // POST- create user
     @PostMapping
     // RequestBody used to convert the json we are getting into a java object
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto){
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto){
         UserDto createUserDto = this.userService.createUser(userDto);
         return new ResponseEntity<>(createUserDto, HttpStatus.CREATED);
     }
 
     // PUT- update user
     @PutMapping("/{id}")
-    public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto, @PathVariable(name = "id") Integer userId){
+    public ResponseEntity<UserDto> updateUser(@Valid @RequestBody UserDto userDto, @PathVariable(name = "id") Integer userId){
         UserDto updatedUser= this.userService.updateUser(userDto, userId);
         //can give in this way also
         return ResponseEntity.ok(updatedUser);
