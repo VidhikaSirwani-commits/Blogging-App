@@ -13,6 +13,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 public class PostDto {
+    private Integer postId;
     // from user we will get only title and content
     private String title;
 
