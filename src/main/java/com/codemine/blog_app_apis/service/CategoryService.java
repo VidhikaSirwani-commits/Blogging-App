@@ -1,6 +1,4 @@
 package com.codemine.blog_app_apis.service;
-
-import com.codemine.blog_app_apis.entities.Category;
 import com.codemine.blog_app_apis.payloads.CategoryDto;
 
 import java.util.List;

@@ -2,6 +2,7 @@ package com.codemine.blog_app_apis.controllers;
 
 import com.codemine.blog_app_apis.payloads.ApiResponse;
 import com.codemine.blog_app_apis.payloads.PostDto;
+import com.codemine.blog_app_apis.payloads.PostResponse;
 import com.codemine.blog_app_apis.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,22 +29,44 @@ public class PostController {
         return new ResponseEntity<PostDto>(createdPost, HttpStatus.CREATED);
     }
 
+    /*
+    Note:- when default values is not given then we try to hit the request without passing
+    request params then we will get an exception which is called as
+    MissingServletRequestParameterException
+     */
     @GetMapping("/category/{categoryId}/posts")
-    public ResponseEntity<List<PostDto>> getPostByCategory(@PathVariable Integer categoryId){
-        List<PostDto> postsDtos = postService.getPostsByCategory(categoryId);
-        return new ResponseEntity<List<PostDto>>(postsDtos,HttpStatus.OK);
+    public ResponseEntity<PostResponse> getPostByCategory(
+            @PathVariable Integer categoryId,
+            @RequestParam(value = "pageNumber", defaultValue = "0", required = false) Integer pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize){
+        PostResponse postsDtos = postService.getPostsByCategory(categoryId,pageNumber,pageSize);
+        return new ResponseEntity<PostResponse>(postsDtos,HttpStatus.OK);
     }
 
+    // we will do pagination for this
     @GetMapping("/user/{userId}/posts")
-    public ResponseEntity<List<PostDto>> getPostByUser(@PathVariable Integer userId){
-        List<PostDto> posts = postService.getPostsByUser(userId);
-        return new ResponseEntity<List<PostDto>>(posts, HttpStatus.OK);
+    public ResponseEntity<PostResponse> getPostByUser(
+            @PathVariable Integer userId,
+            @RequestParam(value = "pageNumber", defaultValue = "0", required = false)Integer pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = "5",required = false)Integer pageSize){
+        PostResponse posts = postService.getPostsByUser(userId,pageNumber,pageSize);
+        return new ResponseEntity<PostResponse>(posts, HttpStatus.OK);
     }
 
     @GetMapping("/posts")
-    public ResponseEntity<List<PostDto>> getAllPosts(){
-        List<PostDto> allPosts = postService.getAllPosts();
-        return new ResponseEntity<List<PostDto>>(allPosts,HttpStatus.OK);
+    public ResponseEntity<PostResponse> getAllPosts(
+            /*
+            few things to note here
+            1. we used RequestParam where we passed the default values
+            (its like if no number given 10 will be default)
+            note:- pageNumber starts with 0 so be careful of it
+            2. value means the key passed in the key-value pair inside the postman
+            (for RequestParam we will have to give key-value pair inside the postman)
+             */
+            @RequestParam(value = "pageNumber", defaultValue = "0",required = false) Integer pageNumber,
+            @RequestParam(value = "pageSize",defaultValue = "10", required = false) Integer pageSize){
+        PostResponse allPosts = postService.getAllPosts(pageNumber,pageSize);
+        return new ResponseEntity<PostResponse>(allPosts,HttpStatus.OK);
     }
 
     @GetMapping("/posts/{postId}")

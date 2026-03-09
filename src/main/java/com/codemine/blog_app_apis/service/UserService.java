@@ -1,6 +1,4 @@
 package com.codemine.blog_app_apis.service;
-
-import com.codemine.blog_app_apis.entities.User;
 import com.codemine.blog_app_apis.payloads.UserDto;
 
 import java.util.List;

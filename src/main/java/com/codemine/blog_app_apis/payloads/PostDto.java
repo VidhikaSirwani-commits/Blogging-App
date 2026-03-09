@@ -1,8 +1,4 @@
 package com.codemine.blog_app_apis.payloads;
-
-import com.codemine.blog_app_apis.entities.Category;
-import com.codemine.blog_app_apis.entities.User;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
