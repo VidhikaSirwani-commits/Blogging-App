@@ -3,11 +3,15 @@ package com.codemine.blog_app_apis.service.impl;
 import com.codemine.blog_app_apis.entities.User;
 import com.codemine.blog_app_apis.exceptions.ResourceNotFoundException;
 import com.codemine.blog_app_apis.payloads.UserDto;
+import com.codemine.blog_app_apis.payloads.UserResponse;
 import com.codemine.blog_app_apis.repository.UserRepo;
 import com.codemine.blog_app_apis.service.UserService;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -68,12 +72,36 @@ while updating the user we will do following
         return this.userToDto(user);
     }
 
+    //without pagination and UserResponse
+//    @Override
+//    public List<UserDto> getAllUsers() {
+//        List<User> users = this.userRepo.findAll();
+//        //now we have to send list of all the dtos so need to convert this users to dto
+//        List<UserDto> userDtos = users.stream().map(user -> this.userToDto(user)).collect(Collectors.toList());
+//        return userDtos;
+//    }
+
+    //with pagination and UserResponse
     @Override
-    public List<UserDto> getAllUsers() {
-        List<User> users = this.userRepo.findAll();
+    public UserResponse getAllUsers(Integer pageNumber, Integer pageSize) {
+        // create a pageable object
+        Pageable pageable= PageRequest.of(pageNumber,pageSize);
+        Page<User> userPage = this.userRepo.findAll(pageable);
+        //convert the userPage to List<User>
+        List<User> users = userPage.getContent();
         //now we have to send list of all the dtos so need to convert this users to dto
-        List<UserDto> userDtos = users.stream().map(user -> this.userToDto(user)).collect(Collectors.toList());
-        return userDtos;
+        List<UserDto> userDtos = users.stream()
+                .map(user -> this.userToDto(user))
+                .collect(Collectors.toList());
+        // covert into UserResponse object
+        UserResponse userResponse=new UserResponse();
+        userResponse.setContent(userDtos);
+        userResponse.setPageNumber(userPage.getNumber());
+        userResponse.setPageSize(userPage.getSize());
+        userResponse.setTotalElements(userPage.getTotalElements());
+        userResponse.setTotalPages(userResponse.getTotalPages());
+        userResponse.setLastPage(userPage.isLast());
+        return userResponse;
     }
 
     @Override

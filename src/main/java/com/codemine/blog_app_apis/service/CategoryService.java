@@ -1,5 +1,7 @@
 package com.codemine.blog_app_apis.service;
 import com.codemine.blog_app_apis.payloads.CategoryDto;
+import com.codemine.blog_app_apis.payloads.CategoryResponse;
+import com.codemine.blog_app_apis.payloads.PostResponse;
 
 import java.util.List;
 
@@ -19,5 +21,9 @@ public interface CategoryService {
     CategoryDto fetchCategory(Integer categoryId);
 
     //get-all
-    List<CategoryDto> fetchAllCategory();
+    //without pagination and PostResponse
+//    List<CategoryDto> fetchAllCategory();
+
+    // with pagination and PostResponse
+    CategoryResponse fetchAllCategory(Integer pageNumber, Integer pageSize);
 }

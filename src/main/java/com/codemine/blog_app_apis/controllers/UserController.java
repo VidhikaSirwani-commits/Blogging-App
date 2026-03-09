@@ -2,6 +2,7 @@ package com.codemine.blog_app_apis.controllers;
 
 import com.codemine.blog_app_apis.payloads.ApiResponse;
 import com.codemine.blog_app_apis.payloads.UserDto;
+import com.codemine.blog_app_apis.payloads.UserResponse;
 import com.codemine.blog_app_apis.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,12 +46,15 @@ public class UserController {
 
     //GET- find all users
     @GetMapping("/allUsers")
-    public ResponseEntity<List<UserDto>> findUsers(){
+    public ResponseEntity<UserResponse> findUsers(
+            @RequestParam(value = "pageNumber", defaultValue = "0",required = false) Integer pageNumber,
+            @RequestParam(value = "pageSize",defaultValue = "5",required = false) Integer pageSize
+    ){
 //        List<UserDto> list= this.userService.getAllUsers();
 //        return new ResponseEntity<List<UserDto>>(list, HttpStatus.OK);
 
         //can also make it in one line of code
-        return new ResponseEntity<List<UserDto>>(this.userService.getAllUsers(), HttpStatus.OK);
+        return new ResponseEntity<UserResponse>(this.userService.getAllUsers(pageNumber,pageSize), HttpStatus.OK);
     }
 
     // DELETE- delete user

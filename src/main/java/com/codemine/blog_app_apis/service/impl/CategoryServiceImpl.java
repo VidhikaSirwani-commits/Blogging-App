@@ -1,13 +1,20 @@
 package com.codemine.blog_app_apis.service.impl;
 
 import com.codemine.blog_app_apis.entities.Category;
+import com.codemine.blog_app_apis.entities.Post;
 import com.codemine.blog_app_apis.exceptions.ResourceNotFoundException;
 import com.codemine.blog_app_apis.payloads.CategoryDto;
+import com.codemine.blog_app_apis.payloads.CategoryResponse;
+import com.codemine.blog_app_apis.payloads.PostResponse;
 import com.codemine.blog_app_apis.repository.CatergoryRepo;
 import com.codemine.blog_app_apis.service.CategoryService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -61,10 +68,21 @@ public class CategoryServiceImpl implements CategoryService {
 
     //get-all
     @Override
-    public List<CategoryDto> fetchAllCategory() {
-        List<Category> allCats = catergoryRepo.findAll();
-        List<CategoryDto> allCatsDto = allCats.stream().map(cat -> modelMapper.map(cat, CategoryDto.class)).collect(Collectors.toList());
-        return allCatsDto;
+    public CategoryResponse fetchAllCategory(Integer pageNumber,Integer pageSize) {
+        Pageable pageable= PageRequest.of(pageNumber,pageSize);
+        Page<Category> categoryPage = catergoryRepo.findAll(pageable);
+        List<Category> allCats = categoryPage.getContent();
+        List<CategoryDto> allCatsDto = allCats.stream()
+                .map(cat -> modelMapper.map(cat, CategoryDto.class))
+                .collect(Collectors.toList());
+        CategoryResponse categoryResponse=new CategoryResponse();
+        categoryResponse.setContent(allCatsDto);
+        categoryResponse.setPageNumber(categoryPage.getNumber());
+        categoryResponse.setPageSize(categoryPage.getSize());
+        categoryResponse.setTotalElements(categoryPage.getTotalElements());
+        categoryResponse.setTotalPages(categoryPage.getTotalPages());
+        categoryResponse.setLastPage(categoryPage.isLast());
+        return categoryResponse;
     }
 
     public Category dtoToCategory(CategoryDto categoryDto){

@@ -1,5 +1,6 @@
 package com.codemine.blog_app_apis.service;
 import com.codemine.blog_app_apis.payloads.UserDto;
+import com.codemine.blog_app_apis.payloads.UserResponse;
 
 import java.util.List;
 
@@ -16,7 +17,11 @@ public interface UserService {
 
     UserDto getUserById(Integer userId);
 
-    List<UserDto> getAllUsers();
+    //without pagination and UserResponse
+//    List<UserDto> getAllUsers();
+
+    //with pagination and UserResponse
+    UserResponse getAllUsers(Integer pageNumber, Integer pageSize);
 
     void deleteUser(Integer userId);
 }

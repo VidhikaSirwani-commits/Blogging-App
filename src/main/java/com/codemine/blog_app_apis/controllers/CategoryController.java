@@ -1,6 +1,8 @@
 package com.codemine.blog_app_apis.controllers;
 
 import com.codemine.blog_app_apis.payloads.CategoryDto;
+import com.codemine.blog_app_apis.payloads.CategoryResponse;
+import com.codemine.blog_app_apis.payloads.PostResponse;
 import com.codemine.blog_app_apis.service.CategoryService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,10 +45,21 @@ public class CategoryController {
     }
 
     //get-all
+    //without pagination and PostResponse
+//    @GetMapping
+//    public ResponseEntity<List<CategoryDto>> getAllCategories(){
+//        List<CategoryDto> allCategoryDtos = categoryService.fetchAllCategory();
+//        return new ResponseEntity<List<CategoryDto>>(allCategoryDtos,HttpStatus.OK);
+//    }
+
+    //with pagination and PostResponse
     @GetMapping
-    public ResponseEntity<List<CategoryDto>> getAllCategories(){
-        List<CategoryDto> allCategoryDtos = categoryService.fetchAllCategory();
-        return new ResponseEntity<List<CategoryDto>>(allCategoryDtos,HttpStatus.OK);
+    public ResponseEntity<CategoryResponse> getAllCategories(
+            @RequestParam(value = "pageNumber",defaultValue = "0",required = false) Integer pageNumber,
+            @RequestParam(value = "pageSize",defaultValue = "5",required = false) Integer pageSize
+    ){
+        CategoryResponse allCategoriesDtos= categoryService.fetchAllCategory(pageNumber,pageSize);
+        return new ResponseEntity<CategoryResponse>(allCategoriesDtos,HttpStatus.OK);
     }
 
 }
