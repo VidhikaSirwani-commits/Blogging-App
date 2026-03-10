@@ -33,8 +33,11 @@ public class PostController {
     public ResponseEntity<PostResponse> getPostByCategory(
             @PathVariable Integer categoryId,
             @RequestParam(value = "pageNumber", defaultValue = "0", required = false) Integer pageNumber,
-            @RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize){
-        PostResponse postsDtos = postService.getPostsByCategory(categoryId,pageNumber,pageSize);
+            @RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize,
+            @RequestParam(value = "sortBy", defaultValue = "postId", required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir
+            ){
+        PostResponse postsDtos = postService.getPostsByCategory(categoryId,pageNumber,pageSize,sortBy,sortDir);
         return new ResponseEntity<PostResponse>(postsDtos,HttpStatus.OK);
     }
 
@@ -43,8 +46,11 @@ public class PostController {
     public ResponseEntity<PostResponse> getPostByUser(
             @PathVariable Integer userId,
             @RequestParam(value = "pageNumber", defaultValue = "0", required = false)Integer pageNumber,
-            @RequestParam(value = "pageSize", defaultValue = "5",required = false)Integer pageSize){
-        PostResponse posts = postService.getPostsByUser(userId,pageNumber,pageSize);
+            @RequestParam(value = "pageSize", defaultValue = "5",required = false)Integer pageSize,
+            @RequestParam(value = "sortBy", defaultValue = "postId", required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = "postId",required = false) String sortDir
+            ){
+        PostResponse posts = postService.getPostsByUser(userId,pageNumber,pageSize,sortBy,sortDir);
         return new ResponseEntity<PostResponse>(posts, HttpStatus.OK);
     }
 
@@ -57,10 +63,15 @@ public class PostController {
             note:- pageNumber starts with 0 so be careful of it
             2. value means the key passed in the key-value pair inside the postman
             (for RequestParam we will have to give key-value pair inside the postman)
+            3. required=false this means feild is not compulsory to enter
+            ie optional user can give or not
              */
             @RequestParam(value = "pageNumber", defaultValue = "0",required = false) Integer pageNumber,
-            @RequestParam(value = "pageSize",defaultValue = "10", required = false) Integer pageSize){
-        PostResponse allPosts = postService.getAllPosts(pageNumber,pageSize);
+            @RequestParam(value = "pageSize",defaultValue = "10", required = false) Integer pageSize,
+            @RequestParam(value = "sortBy", defaultValue = "postId", required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir
+            ){
+        PostResponse allPosts = postService.getAllPosts(pageNumber,pageSize,sortBy,sortDir);
         return new ResponseEntity<PostResponse>(allPosts,HttpStatus.OK);
     }
 

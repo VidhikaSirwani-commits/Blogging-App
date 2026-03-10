@@ -48,13 +48,15 @@ public class UserController {
     @GetMapping("/allUsers")
     public ResponseEntity<UserResponse> findUsers(
             @RequestParam(value = "pageNumber", defaultValue = "0",required = false) Integer pageNumber,
-            @RequestParam(value = "pageSize",defaultValue = "5",required = false) Integer pageSize
+            @RequestParam(value = "pageSize",defaultValue = "5",required = false) Integer pageSize,
+            @RequestParam(value = "sortBy",defaultValue = "userId", required = false)String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = "asc", required = false)String sortDir
     ){
 //        List<UserDto> list= this.userService.getAllUsers();
 //        return new ResponseEntity<List<UserDto>>(list, HttpStatus.OK);
 
         //can also make it in one line of code
-        return new ResponseEntity<UserResponse>(this.userService.getAllUsers(pageNumber,pageSize), HttpStatus.OK);
+        return new ResponseEntity<UserResponse>(this.userService.getAllUsers(pageNumber,pageSize,sortBy,sortDir), HttpStatus.OK);
     }
 
     // DELETE- delete user

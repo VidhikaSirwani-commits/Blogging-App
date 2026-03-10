@@ -21,7 +21,7 @@ public interface UserService {
 //    List<UserDto> getAllUsers();
 
     //with pagination and UserResponse
-    UserResponse getAllUsers(Integer pageNumber, Integer pageSize);
+    UserResponse getAllUsers(Integer pageNumber, Integer pageSize, String sortBy, String sortDir);
 
     void deleteUser(Integer userId);
 }

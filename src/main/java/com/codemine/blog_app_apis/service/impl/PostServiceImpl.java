@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -130,8 +131,22 @@ public class PostServiceImpl implements PostService {
 
 
     @Override
-    public PostResponse getAllPosts(Integer pageNumber, Integer pageSize) {
-        Pageable p = PageRequest.of(pageNumber, pageSize);
+    public PostResponse getAllPosts(Integer pageNumber, Integer pageSize, String sortBy, String sortDir) {
+        // check which direction we need to sort
+        /*
+        Sort sort=null;
+        if(sortBy.equalsIgnoreCase("asc"))
+            //we are doing method chaining and trying to sort in the direction
+            sort= Sort.by(sortBy).ascending();
+        else
+            sort= Sort.by(sortBy).descending();
+*/
+        //we can also go this using the ternary operator and avoid the if-else
+        Sort sort= sortDir.equalsIgnoreCase("asc")?
+                Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+
+        //in pageable object we pass a sortBy object
+        Pageable p = PageRequest.of(pageNumber, pageSize, sort);
         Page<Post> postsPages = postRepo.findAll(p);
         List<Post> allposts = postsPages.getContent();
         List<PostDto> postDtos = allposts.stream()
@@ -177,11 +192,17 @@ public class PostServiceImpl implements PostService {
 */
     //change to pagination and with the PostResponse
     @Override
-    public PostResponse getPostsByCategory(Integer categoryId, Integer pageNumber, Integer pageSize) {
+    public PostResponse getPostsByCategory(Integer categoryId, Integer pageNumber, Integer pageSize, String sortBy, String sortDir) {
+        // perform sorting
+        Sort sort=null;
+        if (sortDir.equalsIgnoreCase("asc"))
+            sort=Sort.by(sortBy).ascending();
+        else
+            sort=Sort.by(sortBy).descending();
         Category category = catergoryRepo.findById(categoryId)
                 .orElseThrow(() -> new ResourceNotFoundException("Category", " category id", categoryId));
         //trying to get the pageable object and pass into JPARepo
-        Pageable pageable= PageRequest.of(pageNumber,pageSize);
+        Pageable pageable= PageRequest.of(pageNumber,pageSize,sort);
         //get the page object
         Page<Post> posts = postRepo.findByCategory(category, pageable);
         //have to get all the posts from the page so use getContent()
@@ -216,11 +237,13 @@ public class PostServiceImpl implements PostService {
 
     //with pagination and PostResponse
     @Override
-    public PostResponse getPostsByUser(Integer userId, Integer pageNumber, Integer pageSize) {
+    public PostResponse getPostsByUser(Integer userId, Integer pageNumber, Integer pageSize, String sortBy, String sortDir) {
         User user = userRepo.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "user id", userId));
+        Sort sort= sortDir.equalsIgnoreCase("asc")?
+                Sort.by(sortBy).ascending(): Sort.by(sortBy).descending();
 // get a pageable object
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
         //from db get the Page object
         Page<Post> pagePost = postRepo.findByUser(user, pageable);
         List<PostDto> postDtos = pagePost.stream()

@@ -22,7 +22,9 @@ public interface PostService {
     //with pagination
 //    List<PostDto> getAllPosts(Integer pageNumber, Integer pageSize);
     // with a PostResponse object
-    PostResponse getAllPosts(Integer pageNumber, Integer pageSize);
+//    PostResponse getAllPosts(Integer pageNumber, Integer pageSize);
+    // with sorting and direction also
+    PostResponse getAllPosts(Integer pageNumber, Integer pageSize,String sortBy,String sortDir);
 
     //get single post
     PostDto getPostById(Integer postId);
@@ -30,13 +32,13 @@ public interface PostService {
     //get all post of a category
     //without Pagination and PostResponse
 //    List<PostDto> getPostsByCategory(Integer categoryId);
-//with Pagination and PostResponse
-    PostResponse getPostsByCategory(Integer categoryId,Integer pageNumber, Integer pageSize);
+//with Pagination and PostResponse and sorting
+    PostResponse getPostsByCategory(Integer categoryId,Integer pageNumber, Integer pageSize, String sortBy, String sortDir);
 
     //get all post of user
 //    List<PostDto> getPostsByUser(Integer userId);
     //with pagination and postresponse
-    PostResponse getPostsByUser(Integer userId,Integer pageNumber, Integer pageSize);
+    PostResponse getPostsByUser(Integer userId,Integer pageNumber, Integer pageSize,String sortBy, String sortDir);
 
     //search post based on keyword
     List<PostDto> searchPosts(String keyword);

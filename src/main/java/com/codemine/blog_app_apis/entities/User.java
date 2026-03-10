@@ -17,7 +17,7 @@ public class User {
 // will create id and generate the primary values automatically
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Integer userId;
     // to change the column name and all can us @Column
     //nullable = false means no null values allowed
     @Column(name = "user_name", nullable = false, length = 100)

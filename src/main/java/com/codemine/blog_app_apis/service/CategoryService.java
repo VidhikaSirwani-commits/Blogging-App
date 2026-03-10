@@ -25,5 +25,5 @@ public interface CategoryService {
 //    List<CategoryDto> fetchAllCategory();
 
     // with pagination and PostResponse
-    CategoryResponse fetchAllCategory(Integer pageNumber, Integer pageSize);
+    CategoryResponse fetchAllCategory(Integer pageNumber, Integer pageSize,String sortBy, String sortDir);
 }

@@ -15,7 +15,7 @@ public class UserDto {
     for global exception handler we will get MethodArgNotValidException
      */
 
-    private Integer id;
+    private Integer userId;
 //    @NotNull //it checks if null or not but will not check for empty
     @NotEmpty //checks for both null and empty
     @Size(min = 4, message = "Username must be mininmum of 4 charcters")

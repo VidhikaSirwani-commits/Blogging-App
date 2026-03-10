@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -83,9 +84,11 @@ while updating the user we will do following
 
     //with pagination and UserResponse
     @Override
-    public UserResponse getAllUsers(Integer pageNumber, Integer pageSize) {
+    public UserResponse getAllUsers(Integer pageNumber, Integer pageSize,String sortBy, String sortDir) {
+        Sort sort= sortDir.equalsIgnoreCase("asc")?
+                Sort.by(sortBy).ascending(): Sort.by(sortBy).descending();
         // create a pageable object
-        Pageable pageable= PageRequest.of(pageNumber,pageSize);
+        Pageable pageable= PageRequest.of(pageNumber,pageSize,sort);
         Page<User> userPage = this.userRepo.findAll(pageable);
         //convert the userPage to List<User>
         List<User> users = userPage.getContent();
