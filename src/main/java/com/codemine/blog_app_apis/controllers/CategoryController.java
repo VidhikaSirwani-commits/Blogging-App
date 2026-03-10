@@ -1,5 +1,6 @@
 package com.codemine.blog_app_apis.controllers;
 
+import com.codemine.blog_app_apis.config.AppConstants;
 import com.codemine.blog_app_apis.payloads.CategoryDto;
 import com.codemine.blog_app_apis.payloads.CategoryResponse;
 import com.codemine.blog_app_apis.payloads.PostResponse;
@@ -55,10 +56,10 @@ public class CategoryController {
     //with pagination and PostResponse
     @GetMapping
     public ResponseEntity<CategoryResponse> getAllCategories(
-            @RequestParam(value = "pageNumber",defaultValue = "0",required = false) Integer pageNumber,
-            @RequestParam(value = "pageSize",defaultValue = "5",required = false) Integer pageSize,
-            @RequestParam(value = "sortBy", defaultValue = "sortBy", required = false)String sortBy,
-            @RequestParam(value = "sortDir", defaultValue = "sortDir", required = false)String sortDir
+            @RequestParam(value = "pageNumber",defaultValue = AppConstants.PAGE_NUMBER,required = false) Integer pageNumber,
+            @RequestParam(value = "pageSize",defaultValue = AppConstants.PAGE_SIZE,required = false) Integer pageSize,
+            @RequestParam(value = "sortBy", defaultValue = AppConstants.CATEGORY_SORT_BY, required = false)String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = AppConstants.SORT_DIR, required = false)String sortDir
     ){
         CategoryResponse allCategoriesDtos= categoryService.fetchAllCategory(pageNumber,pageSize,sortBy,sortDir);
         return new ResponseEntity<CategoryResponse>(allCategoriesDtos,HttpStatus.OK);

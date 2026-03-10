@@ -24,4 +24,6 @@ public interface UserService {
     UserResponse getAllUsers(Integer pageNumber, Integer pageSize, String sortBy, String sortDir);
 
     void deleteUser(Integer userId);
+
+    List<UserDto> searchByName(String name);
 }

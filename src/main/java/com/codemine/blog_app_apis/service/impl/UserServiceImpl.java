@@ -121,6 +121,16 @@ while updating the user we will do following
 
     }
 
+    @Override
+    public List<UserDto> searchByName(String name) {
+//        List<User> users = userRepo.searchByName("%"+name+"%");
+        userRepo.findByNameContaining(name)
+        List<UserDto> userDtos = users.stream()
+                .map(user -> modelMapper.map(user, UserDto.class))
+                .collect(Collectors.toList());
+        return userDtos;
+    }
+
     private User dtoToUser(UserDto userDto){
         // lets convert the dto to user using object mapper
         /*

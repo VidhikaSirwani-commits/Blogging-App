@@ -262,6 +262,13 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<PostDto> searchPosts(String keyword) {
-        return List.of();
+//        the way below we will use to get the like pattern %
+//        (these are called wild cards % and _)
+//        List<Post> resultPosts= postRepo.searchByTitle("%"+keyword+"%");
+        List<Post> foundPosts = postRepo.findByTitleContaining(keyword);
+        List<PostDto> postDtos = foundPosts.stream()
+                .map(post -> modelMapper.map(post, PostDto.class))
+                .collect(Collectors.toList());
+        return postDtos;
     }
 }

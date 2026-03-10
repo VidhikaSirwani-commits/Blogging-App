@@ -1,5 +1,6 @@
 package com.codemine.blog_app_apis.controllers;
 
+import com.codemine.blog_app_apis.config.AppConstants;
 import com.codemine.blog_app_apis.payloads.ApiResponse;
 import com.codemine.blog_app_apis.payloads.PostDto;
 import com.codemine.blog_app_apis.payloads.PostResponse;
@@ -8,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -32,10 +35,10 @@ public class PostController {
     @GetMapping("/category/{categoryId}/posts")
     public ResponseEntity<PostResponse> getPostByCategory(
             @PathVariable Integer categoryId,
-            @RequestParam(value = "pageNumber", defaultValue = "0", required = false) Integer pageNumber,
-            @RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize,
-            @RequestParam(value = "sortBy", defaultValue = "postId", required = false) String sortBy,
-            @RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir
+            @RequestParam(value = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
+            @RequestParam(value = "sortBy", defaultValue = AppConstants.POST_SORT_BY, required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = AppConstants.SORT_DIR, required = false) String sortDir
             ){
         PostResponse postsDtos = postService.getPostsByCategory(categoryId,pageNumber,pageSize,sortBy,sortDir);
         return new ResponseEntity<PostResponse>(postsDtos,HttpStatus.OK);
@@ -45,10 +48,10 @@ public class PostController {
     @GetMapping("/user/{userId}/posts")
     public ResponseEntity<PostResponse> getPostByUser(
             @PathVariable Integer userId,
-            @RequestParam(value = "pageNumber", defaultValue = "0", required = false)Integer pageNumber,
-            @RequestParam(value = "pageSize", defaultValue = "5",required = false)Integer pageSize,
-            @RequestParam(value = "sortBy", defaultValue = "postId", required = false) String sortBy,
-            @RequestParam(value = "sortDir", defaultValue = "postId",required = false) String sortDir
+            @RequestParam(value = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false)Integer pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = AppConstants.PAGE_SIZE,required = false)Integer pageSize,
+            @RequestParam(value = "sortBy", defaultValue = AppConstants.POST_SORT_BY, required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = AppConstants.SORT_DIR,required = false) String sortDir
             ){
         PostResponse posts = postService.getPostsByUser(userId,pageNumber,pageSize,sortBy,sortDir);
         return new ResponseEntity<PostResponse>(posts, HttpStatus.OK);
@@ -66,10 +69,10 @@ public class PostController {
             3. required=false this means feild is not compulsory to enter
             ie optional user can give or not
              */
-            @RequestParam(value = "pageNumber", defaultValue = "0",required = false) Integer pageNumber,
-            @RequestParam(value = "pageSize",defaultValue = "10", required = false) Integer pageSize,
-            @RequestParam(value = "sortBy", defaultValue = "postId", required = false) String sortBy,
-            @RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir
+            @RequestParam(value = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER,required = false) Integer pageNumber,
+            @RequestParam(value = "pageSize",defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
+            @RequestParam(value = "sortBy", defaultValue = AppConstants.POST_SORT_BY, required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = AppConstants.SORT_DIR, required = false) String sortDir
             ){
         PostResponse allPosts = postService.getAllPosts(pageNumber,pageSize,sortBy,sortDir);
         return new ResponseEntity<PostResponse>(allPosts,HttpStatus.OK);
@@ -81,7 +84,7 @@ public class PostController {
         return new ResponseEntity<PostDto>(postDto,HttpStatus.OK);
     }
 
-    @DeleteMapping("posts/{postId}")
+    @DeleteMapping("/posts/{postId}")
     public ResponseEntity<ApiResponse> deleteById(@PathVariable Integer postId){
         postService.deletePost(postId);
         return ResponseEntity.ok(new ApiResponse("post deleted successfully!!", true));
@@ -91,5 +94,11 @@ public class PostController {
     public ResponseEntity<PostDto> updatePost(@RequestBody PostDto postDto, @PathVariable Integer postId){
         PostDto updatedPost = postService.updatePost(postDto, postId);
         return new ResponseEntity<PostDto>(updatedPost,HttpStatus.OK);
+    }
+
+    @GetMapping("/posts/search/{keyword}")
+    public ResponseEntity<List<PostDto>> searchPost(@PathVariable String keyword){
+        List<PostDto> postDtos = postService.searchPosts(keyword);
+        return new ResponseEntity<List<PostDto>>(postDtos, HttpStatus.OK);
     }
 }
