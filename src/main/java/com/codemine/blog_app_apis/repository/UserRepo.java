@@ -9,7 +9,7 @@ import java.util.List;
 
 
 public interface UserRepo extends JpaRepository<User, Integer> {
-    @Query("select u from User where name like :name")
+    @Query("select u from User u where u.name like :name")
     List<User> searchByName(@Param("name") String name);
 
     List<User> findByNameContaining(String name);

@@ -124,7 +124,7 @@ while updating the user we will do following
     @Override
     public List<UserDto> searchByName(String name) {
 //        List<User> users = userRepo.searchByName("%"+name+"%");
-        userRepo.findByNameContaining(name)
+        List<User> users = userRepo.findByNameContaining(name);
         List<UserDto> userDtos = users.stream()
                 .map(user -> modelMapper.map(user, UserDto.class))
                 .collect(Collectors.toList());
