@@ -16,7 +16,7 @@ import java.util.List;
 public class User {
 // will create id and generate the primary values automatically
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userId;
     // to change the column name and all can us @Column
     //nullable = false means no null values allowed
@@ -28,4 +28,7 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Post> posts=new ArrayList<>();
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    private List<Comment> comments= new ArrayList<>();
 }

@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Category {
     @Id
-    @GeneratedValue(strategy =  GenerationType.AUTO)
+    @GeneratedValue(strategy =  GenerationType.IDENTITY)
     private Integer categoryId;
     // now this column name in db will be title, length will be 100
     //also null values will not be accepted here

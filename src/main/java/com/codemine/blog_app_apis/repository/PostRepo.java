@@ -23,7 +23,7 @@ public interface PostRepo extends JpaRepository<Post, Integer> {
 //    List<Post> findByUser(User user);
 
     //with pagination and PostResponse
-    Page<Post> findByUser(User user,Pageable pageable);
+    Page<Post> findByUserUserId(Integer userId, Pageable pageable);
 
     /*
     when coding the programer was facing an issue because of the version had been mismatched

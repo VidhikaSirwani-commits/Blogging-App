@@ -1,9 +1,12 @@
 package com.codemine.blog_app_apis.payloads;
+import com.codemine.blog_app_apis.entities.Comment;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -36,4 +39,9 @@ public class PostDto {
     private CategoryDto category;
 
     private UserDto user;
+ /*
+ note:- if you give Set<Comment> then its like you are going to infinte loop
+ because Comment has Post inside it. so its like from Comment to Post and the Post to Comment
+  */
+    private Set<CommentDto> comments= new HashSet<>();
 }

@@ -18,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -245,10 +246,13 @@ public class PostServiceImpl implements PostService {
 // get a pageable object
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
         //from db get the Page object
-        Page<Post> pagePost = postRepo.findByUser(user, pageable);
-        List<PostDto> postDtos = pagePost.stream()
-                .map(post -> modelMapper.map(post, PostDto.class))
-                .collect(Collectors.toList());
+        Page<Post> pagePost = postRepo.findByUserUserId(user.getUserId(), pageable);
+        List<PostDto> postDtos =new ArrayList<>();
+        for (Post post:pagePost.getContent()){
+            System.out.println("--------------"+post);
+            PostDto postDto=modelMapper.map(post,PostDto.class);
+            postDtos.add(postDto);
+        }
         // coverting the response to PostResponse
         PostResponse postResponse=new PostResponse();
         postResponse.setContent(postDtos);

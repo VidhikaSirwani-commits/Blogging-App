@@ -1,5 +1,6 @@
 package com.codemine.blog_app_apis.payloads;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
+//by using this JsonPropertyOrder we will get the json response in sequence
+@JsonPropertyOrder({"userId","name","email","password","about"})
 public class UserDto {
     /*
     the annotations which we are using for validation if not correct it will throw the exception
